@@ -115,8 +115,8 @@ Fact insert_t_equiv :
     fst (insert_t A t ord a T) = insert A ord a T.
 Proof.
   induction T; intros; cbn.
-    destruct (ord a a0); cbn; f_equal; trivial.
-    trivial.
+  - destruct (ord a a0); cbn; f_equal; trivial.
+  - trivial.
 Qed.
 
 Fact insert'_equiv :
@@ -131,12 +131,12 @@ Fact find_t_equiv :
     fst (find_t A t ord a T) = find A ord a T.
 Proof.
   induction T; intros; cbn.
-    destruct (ord a a0).
-      destruct (ord a0 a).
-        trivial.
-        apply IHT1.
-      apply IHT2.
-    trivial.
+  - destruct (ord a a0).
+   + destruct (ord a0 a).
+     * trivial.
+     * apply IHT1.
+   + apply IHT2.
+  - trivial.
 Qed.
 
 Fact find'_equiv :
@@ -151,10 +151,10 @@ Fact min_t_equiv :
     fst (min_t A t T) = min A T.
 Proof.
   induction T; intros; cbn.
-    destruct T1.
-      apply IHT1.
-      trivial.
-    trivial.
+  - destruct T1.
+    + apply IHT1.
+    + trivial.
+  - trivial.
 Qed.
 
 Fact min'_equiv :
@@ -169,10 +169,10 @@ Fact max_t_equiv :
     fst (max_t A t T) = max A T.
 Proof.
   induction T; intros; cbn.
-    destruct T2.
-      apply IHT2.
-      trivial.
-    trivial.
+  - destruct T2.
+    + apply IHT2.
+    + trivial.
+  - trivial.
 Qed.
 
 Fact max'_equiv :
@@ -187,10 +187,10 @@ Fact removeMax_t_equiv :
     fst (removeMax_t A t T) = removeMax A T.
 Proof.
   induction T; intros; cbn.
-    destruct T2.
-      unfold fst. f_equal. apply IHT2.
-      trivial.
-    trivial.
+  - destruct T2.
+    + unfold fst. f_equal. apply IHT2.
+    + trivial.
+  - trivial.
 Qed.
 
 Fact removeMax'_equiv :
@@ -212,12 +212,12 @@ Fact remove'_equiv :
     fst (remove' A T) = remove A T.
 Proof.
   destruct T; cbn.
-    assert (forall (A B : Type) (p : A * B), p = (fst p, snd p)).
-      destruct p. trivial.
-      rewrite H with (Maybe A) nat (max' A T1). rewrite max'_equiv. destruct (max A T1).
-        cbn. f_equal. apply removeMax'_equiv.
-        trivial.
-    trivial.
+  - assert (forall (A B : Type) (p : A * B), p = (fst p, snd p)).
+    + destruct p. trivial.
+    + rewrite H with (Maybe A) nat (max' A T1). rewrite max'_equiv. destruct (max A T1).
+      * cbn. f_equal. apply removeMax'_equiv.
+      * trivial.
+  - trivial.
 Qed.
 
 Fact delete_t_equiv :
@@ -225,16 +225,16 @@ Fact delete_t_equiv :
     fst (delete_t A t ord a T) = delete A ord a T.
 Proof.
   induction T; intros; cbn.
-    destruct (ord a a0); cbn.
-      destruct (ord a0 a); cbn.
-        assert (forall (A B : Type) (p : A * B), p = (fst p, snd p)).
-          destruct p. trivial.
-          rewrite H with (Maybe A) nat (max' A T1). rewrite max'_equiv. destruct (max A T1).
-            cbn. f_equal. apply removeMax'_equiv.
-            trivial.
-        f_equal. apply IHT1.
-      f_equal. apply IHT2.
-    trivial.
+  - destruct (ord a a0); cbn.
+    + destruct (ord a0 a); cbn.
+      * assert (forall (A B : Type) (p : A * B), p = (fst p, snd p)).
+        -- destruct p. trivial.
+        -- rewrite H with (Maybe A) nat (max' A T1). rewrite max'_equiv. destruct (max A T1).
+          ++ cbn. f_equal. apply removeMax'_equiv.
+          ++ trivial.
+      * f_equal. apply IHT1.
+    + f_equal. apply IHT2.
+  - trivial.
 Qed.
 
 Fact delete'_equiv :
@@ -249,8 +249,8 @@ Fact size'_equiv :
     fst (size' A T) = size A T.
 Proof.
   induction T; cbn.
-    f_equal. f_equal; assumption.
-    trivial.
+  - f_equal. f_equal; assumption.
+  - trivial.
 Qed.
 
 Lemma insert_t_complex :
@@ -258,16 +258,16 @@ Lemma insert_t_complex :
     snd (insert_t A t ord a T) <= t + height A T.
 Proof.
   induction T; intros; cbn.
-    destruct (ord a  a0); cbn.
-      apply Nat.le_trans with (S t + height A T1).
-        apply IHT1.
-        rewrite Nat.add_succ_r. rewrite <- Nat.add_succ_l. apply Nat.add_le_mono_l.
-apply Nat.le_max_l.
-      apply Nat.le_trans with (S t + height A T2).
-        apply IHT2.
-        rewrite Nat.add_succ_r. rewrite <- Nat.add_succ_l. apply Nat.add_le_mono_l.
-apply Nat.le_max_r.
-    rewrite Nat.add_0_r. apply Nat.le_refl.
+  - destruct (ord a  a0); cbn.
+    + apply Nat.le_trans with (S t + height A T1).
+      * apply IHT1.
+      * rewrite Nat.add_succ_r. rewrite <- Nat.add_succ_l. apply Nat.add_le_mono_l.
+        apply Nat.le_max_l.
+    + apply Nat.le_trans with (S t + height A T2).
+      * apply IHT2.
+      * rewrite Nat.add_succ_r. rewrite <- Nat.add_succ_l. apply Nat.add_le_mono_l.
+        apply Nat.le_max_r.
+  - rewrite Nat.add_0_r. apply Nat.le_refl.
 Qed.
 
 Theorem insert'_complex :

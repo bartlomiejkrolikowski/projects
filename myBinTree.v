@@ -108,8 +108,8 @@ Fact bool_fun :
     rel a a' = true \/ rel a a' = false.
 Proof.
   intros. destruct (rel a a').
-    left. reflexivity.
-    right. reflexivity.
+  - left. reflexivity.
+  - right. reflexivity.
 Qed.
 
 Fact empty_elem :
@@ -124,9 +124,9 @@ Fact single_elem :
   forall (A : Type) (a a' : A), Elem A a (single A a') -> a = a'.
 Proof.
   intros. inversion H.
-    reflexivity.
-    inversion H1.
-    inversion H1.
+  - reflexivity.
+  - inversion H1.
+  - inversion H1.
 Qed.
 
 Fact BST_single :
@@ -134,10 +134,10 @@ Fact BST_single :
     BSTProperty A (fun a' a'' : A => ord a' a'' = true) (single A a).
 Proof.
   intros. unfold single. apply BST_node.
-    apply BST_empty.
-    apply BST_empty.
-    intros. inversion H.
-    intros. inversion H.
+  - apply BST_empty.
+  - apply BST_empty.
+  - intros. inversion H.
+  - intros. inversion H.
 Qed.
 
 Fact BST_trans :
@@ -147,8 +147,8 @@ Fact BST_trans :
   forall a' a'' : A, Elem A a' Tl -> Elem A a'' Tr -> ord a' a''.
 Proof.
   intros. inversion H0. apply (H a' a a'').
-    apply H8. exact H1.
-    apply H9. exact H2.
+  - apply H8. exact H1.
+  - apply H9. exact H2.
 Qed.
 
 Fact find_correct :
@@ -157,16 +157,16 @@ Fact find_correct :
   forall (a : A) (T : BinTree A), find A ord a T = true -> Elem A a T.
 Proof.
   induction T.
-    cbn. specialize (bool_fun A ord). intro. specialize (H0 a0 a) as H1. specialize (H0 a a0).
-destruct H0.
-        destruct H1.
-          intros. rewrite (H a a0).
-            apply elem_root.
-            exact H0.
-            exact H1.
-          rewrite H0, H1. intros. apply elem_left. apply IHT1. exact H2.
-        rewrite H0. intros. apply elem_right. apply IHT2. exact H2.
-    cbn. intros. inversion H0.
+  - cbn. specialize (bool_fun A ord). intro. specialize (H0 a0 a) as H1. specialize (H0 a a0).
+    destruct H0.
+    + destruct H1.
+      * intros. rewrite (H a a0).
+        -- apply elem_root.
+        -- exact H0.
+        -- exact H1.
+      * rewrite H0, H1. intros. apply elem_left. apply IHT1. exact H2.
+    + rewrite H0. intros. apply elem_right. apply IHT2. exact H2.
+  - cbn. intros. inversion H0.
 Qed.
 
 Fact find_equiv_correct :
@@ -175,25 +175,25 @@ Fact find_equiv_correct :
   exists a' : A, Elem A a' T /\ ord a a' = true /\ ord a' a = true.
 Proof.
   induction T; cbn.
-    specialize (bool_fun A ord). intro. specialize (H a0 a) as H'. specialize (H a a0).
-destruct H; rewrite H.
-      destruct H'; rewrite H0; intros.
-        exists a0. split.
-          apply elem_root.
-          split.
-            exact H.
-            exact H0.
-        destruct IHT1.
-          exact H1.
-          exists x. destruct H2. split.
-            apply elem_left. exact H2.
-            exact H3.
-      intros. destruct IHT2.
-        exact H0.
-        exists x. destruct H1. split.
-          apply elem_right. exact H1.
-          exact H2.
-    intros. inversion H.
+  - specialize (bool_fun A ord). intro. specialize (H a0 a) as H'. specialize (H a a0).
+    destruct H; rewrite H.
+    + destruct H'; rewrite H0; intros.
+      * exists a0. split.
+        -- apply elem_root.
+        -- split.
+           ++ exact H.
+           ++ exact H0.
+      * destruct IHT1.
+        -- exact H1.
+        -- exists x. destruct H2. split.
+           ++ apply elem_left. exact H2.
+           ++ exact H3.
+    + intros. destruct IHT2.
+      * exact H0.
+      * exists x. destruct H1. split.
+        -- apply elem_right. exact H1.
+        -- exact H2.
+  - intros. inversion H.
 Qed.
 
 Fact find_left :
@@ -205,10 +205,10 @@ Fact find_left :
     find A ord a (Node A a' T T') = true.
 Proof.
   intros. cbn. inversion H1. rewrite H7.
-    specialize (bool_fun A ord a' a). intros. destruct H9; rewrite H9.
-      reflexivity.
-      exact H0.
-    exact H.
+  - specialize (bool_fun A ord a' a). intros. destruct H9; rewrite H9.
+    + reflexivity.
+    + exact H0.
+  - exact H.
 Qed.
 
 Fact find_right :
@@ -220,10 +220,10 @@ Fact find_right :
     find A ord a (Node A a' T' T) = true.
 Proof.
   intros. cbn. inversion H1. rewrite H8.
-    specialize (bool_fun A ord a a'). intros. destruct H9; rewrite H9.
-      reflexivity.
-      exact H0.
-    exact H.
+  - specialize (bool_fun A ord a a'). intros. destruct H9; rewrite H9.
+    + reflexivity.
+    + exact H0.
+  - exact H.
 Qed.
 
 Fact find_correct_r :
@@ -234,15 +234,15 @@ Fact find_correct_r :
     Elem A a T -> find A ord a T = true.
 Proof.
   intros. induction H1.
-    cbn. rewrite H. reflexivity.
-    apply find_left.
-      exact H1.
-      apply IHElem. inversion H0. exact H5.
-      exact H0.
-    apply find_right.
-      exact H1.
-      apply IHElem. inversion H0. exact H6.
-      exact H0.
+  - cbn. rewrite H. reflexivity.
+  - apply find_left.
+    + exact H1.
+    + apply IHElem. inversion H0. exact H5.
+    + exact H0.
+  - apply find_right.
+    + exact H1.
+    + apply IHElem. inversion H0. exact H6.
+    + exact H0.
 Qed.
 
 Fact insert_increase :
@@ -250,10 +250,10 @@ Fact insert_increase :
     size A (insert A ord a T) = S (size A T).
 Proof.
   induction T; cbn.
-    specialize (bool_fun A ord a a0). intros. destruct H; rewrite H; cbn; f_equal.
-      rewrite IHT1. cbn. reflexivity.
-      rewrite IHT2. apply Nat.add_succ_r.
-    reflexivity.
+  - specialize (bool_fun A ord a a0). intros. destruct H; rewrite H; cbn; f_equal.
+    + rewrite IHT1. cbn. reflexivity.
+    + rewrite IHT2. apply Nat.add_succ_r.
+  - reflexivity.
 Qed.
 
 Fact insert_correct :
@@ -261,10 +261,10 @@ Fact insert_correct :
     Elem A a (insert A ord a T).
 Proof.
   induction T; cbn.
-    destruct (ord a a0).
-      apply elem_left. exact IHT1.
-      apply elem_right. exact IHT2.
-    apply elem_root.
+  - destruct (ord a a0).
+    + apply elem_left. exact IHT1.
+    + apply elem_right. exact IHT2.
+  - apply elem_root.
 Qed.
 
 Fact insert_extends :
@@ -273,9 +273,9 @@ Fact insert_extends :
   forall (ord : A -> A -> bool) (a' : A), Elem A a (insert A ord a' T).
 Proof.
   intros A a T H. induction H; intros; cbn.
-    destruct (ord a' a); apply elem_root.
-    destruct (ord a'0 a'); apply elem_left; trivial.
-    destruct (ord a'0 a'); apply elem_right; trivial.
+  - destruct (ord a' a); apply elem_root.
+  - destruct (ord a'0 a'); apply elem_left; trivial.
+  - destruct (ord a'0 a'); apply elem_right; trivial.
 Qed.
 
 Lemma insert_elem :
@@ -283,20 +283,20 @@ Lemma insert_elem :
     Elem A a (insert A ord a' T) -> a = a' \/ Elem A a T.
 Proof.
   induction T; cbn; intros.
-    destruct (ord a' a0); inversion H.
-      right. apply elem_root.
-      destruct IHT1.
-        exact H1.
-        left. exact H4.
-        right. apply elem_left. exact H4.
-      right. apply elem_right. exact H1.
-      right. apply elem_root.
-      right. apply elem_left. exact H1.
-      destruct IHT2.
-        exact H1.
-        left. exact H4.
-        right. apply elem_right. exact H4.
-    left. apply single_elem. unfold single. exact H.
+  - destruct (ord a' a0); inversion H.
+    + right. apply elem_root.
+    + destruct IHT1.
+      * exact H1.
+      * left. exact H4.
+      * right. apply elem_left. exact H4.
+    + right. apply elem_right. exact H1.
+    + right. apply elem_root.
+    + right. apply elem_left. exact H1.
+    + destruct IHT2.
+      * exact H1.
+      * left. exact H4.
+      * right. apply elem_right. exact H4.
+  - left. apply single_elem. unfold single. exact H.
 Qed.
 
 Theorem insert_BST_correct :
@@ -306,21 +306,21 @@ Theorem insert_BST_correct :
   forall a : A, BSTProperty A (fun a a' => ord a a' = true) (insert A ord a T).
 Proof.
   intros A ord T ordLin H. induction H.
-    cbn. specialize (bool_fun A ord). intros. specialize (H3 a0 a).
-destruct H3; rewrite H3; apply BST_node.
-      apply IHBSTProperty1.
-      apply H0.
-      intros. specialize (insert_elem A ord a' a0 Tl H4). intro. destruct H5.
-        rewrite H5. exact H3.
-        apply H1. exact H5.
-      exact H2.
-      apply H.
-      apply IHBSTProperty2.
-      exact H1.
-      intros. specialize (insert_elem A ord a' a0 Tr H4). intro. destruct H5.
-        rewrite H5. apply ordLin. exact H3.
-        apply H2. exact H5.
-    cbn. intros. apply BST_single.
+  - cbn. specialize (bool_fun A ord). intros. specialize (H3 a0 a).
+    destruct H3; rewrite H3; apply BST_node.
+    + apply IHBSTProperty1.
+    + apply H0.
+    + intros. specialize (insert_elem A ord a' a0 Tl H4). intro. destruct H5.
+      * rewrite H5. exact H3.
+      * apply H1. exact H5.
+    + exact H2.
+    + apply H.
+    + apply IHBSTProperty2.
+    + exact H1.
+    + intros. specialize (insert_elem A ord a' a0 Tr H4). intro. destruct H5.
+      * rewrite H5. apply ordLin. exact H3.
+      * apply H2. exact H5.
+  - cbn. intros. apply BST_single.
 Qed.
 
 Fact min_node_node :
@@ -349,8 +349,8 @@ Fact min_success :
   exists (a' : A), min A (Node A a Tl Tr) = Just A a'.
 Proof.
   induction Tl; intros.
-    rewrite min_node_node. apply IHTl1.
-    cbn. exists a. reflexivity.
+  - rewrite min_node_node. apply IHTl1.
+  - cbn. exists a. reflexivity.
 Qed.
 
 Lemma min_elem :
@@ -358,10 +358,10 @@ Lemma min_elem :
     min A T = Just A a -> Elem A a T.
 Proof.
   induction T.
-    destruct T1.
-      rewrite min_node_node. intros. apply elem_left. apply IHT1. exact H.
-      cbn. intros. injection H. intros. rewrite H0. apply elem_root.
-    cbn. intros. inversion H.
+  - destruct T1.
+    + rewrite min_node_node. intros. apply elem_left. apply IHT1. exact H.
+    + cbn. intros. injection H. intros. rewrite H0. apply elem_root.
+  - cbn. intros. inversion H.
 Qed.
 
 Theorem min_correct :
@@ -372,21 +372,21 @@ Theorem min_correct :
     Elem A a T -> min A T = Just A a' -> ord a' a.
 Proof.
   intros. induction H1; inversion H2.
-    destruct Tl.
-      apply H1. apply min_elem. rewrite min_node_node in H3. exact H3.
-      cbn in H3. injection H3. intros. rewrite H5. apply H.
-    apply IHBSTProperty1.
-      exact H6.
-      destruct Tl.
-        rewrite min_node_node in H3. exact H3.
-        inversion H6.
-    destruct Tl.
-      apply (BST_trans A ord a0 (Node A a1 Tl1 Tl2) Tr).
-        exact H0.
-        apply BST_node; trivial.
-        apply min_elem. rewrite min_node_node in H3. exact H3.
-        exact H6.
-      cbn in H3. injection H3. intros. rewrite <- H9. apply H4. exact H6.
+  - destruct Tl.
+    + apply H1. apply min_elem. rewrite min_node_node in H3. exact H3.
+    + cbn in H3. injection H3. intros. rewrite H5. apply H.
+  - apply IHBSTProperty1.
+    + exact H6.
+    + destruct Tl.
+      * rewrite min_node_node in H3. exact H3.
+      * inversion H6.
+  - destruct Tl.
+    + apply (BST_trans A ord a0 (Node A a1 Tl1 Tl2) Tr).
+      * exact H0.
+      * apply BST_node; trivial.
+      * apply min_elem. rewrite min_node_node in H3. exact H3.
+      * exact H6.
+    + cbn in H3. injection H3. intros. rewrite <- H9. apply H4. exact H6.
 Qed.
 
 Fact max_node_node :
@@ -415,8 +415,8 @@ Fact max_success :
   exists (a' : A), max A (Node A a Tl Tr) = Just A a'.
 Proof.
   induction Tr; intros.
-    rewrite max_node_node. apply IHTr2.
-    cbn. exists a. reflexivity.
+  - rewrite max_node_node. apply IHTr2.
+  - cbn. exists a. reflexivity.
 Qed.
 
 Lemma max_elem :
@@ -424,10 +424,10 @@ Lemma max_elem :
     max A T = Just A a -> Elem A a T.
 Proof.
   induction T.
-    destruct T2.
-      rewrite max_node_node. intros. apply elem_right. apply IHT2. exact H.
-      cbn. intros. injection H. intros. rewrite H0. apply elem_root.
-    cbn. intros. inversion H.
+  - destruct T2.
+    + rewrite max_node_node. intros. apply elem_right. apply IHT2. exact H.
+    + cbn. intros. injection H. intros. rewrite H0. apply elem_root.
+  - cbn. intros. inversion H.
 Qed.
 
 Theorem max_correct :
@@ -438,21 +438,21 @@ Theorem max_correct :
     Elem A a T -> max A T = Just A a' -> ord a a'.
 Proof.
   intros. induction H1; inversion H2.
-    destruct Tr.
-      apply H4. apply max_elem. rewrite max_node_node in H3. exact H3.
-      cbn in H3. injection H3. intros. rewrite H5. apply H.
-    destruct Tr.
-      apply (BST_trans A ord a0 Tl (Node A a1 Tr1 Tr2)).
-        exact H0.
-        apply BST_node; trivial.
-        exact H6.
-        apply max_elem. rewrite max_node_node in H3. exact H3.
-      cbn in H3. injection H3. intros. rewrite <- H9. apply H1. exact H6.
-    apply IHBSTProperty2.
-      exact H6.
-      destruct Tr.
-        rewrite max_node_node in H3. exact H3.
-        inversion H6.
+  - destruct Tr.
+    + apply H4. apply max_elem. rewrite max_node_node in H3. exact H3.
+    + cbn in H3. injection H3. intros. rewrite H5. apply H.
+  - destruct Tr.
+    + apply (BST_trans A ord a0 Tl (Node A a1 Tr1 Tr2)).
+      * exact H0.
+      * apply BST_node; trivial.
+      * exact H6.
+      * apply max_elem. rewrite max_node_node in H3. exact H3.
+    + cbn in H3. injection H3. intros. rewrite <- H9. apply H1. exact H6.
+  - apply IHBSTProperty2.
+    + exact H6.
+    + destruct Tr.
+      * rewrite max_node_node in H3. exact H3.
+      * inversion H6.
 Qed.
 
 Fact root_node :
@@ -471,8 +471,8 @@ Fact root_elem :
   forall (A : Type) (a : A) (T : BinTree A), root A T = Just A a -> Elem A a T.
 Proof.
   destruct T; cbn; intros.
-    injection H. intros. rewrite H0. apply elem_root.
-    inversion H.
+  - injection H. intros. rewrite H0. apply elem_root.
+  - inversion H.
 Qed.
 
 Fact size_node :
@@ -492,11 +492,11 @@ Fact removeMax_decrease :
   forall (A : Type) (T : BinTree A), size A (removeMax A T) = size A T - 1.
 Proof.
   induction T; cbn.
-    destruct T2.
-      rewrite size_node. rewrite IHT2. cbn. rewrite Nat.add_succ_r. cbn. rewrite Nat.sub_0_r.
-reflexivity.
-      cbn. symmetry. rewrite Nat.sub_0_r. apply Nat.add_0_r.
-    reflexivity.
+  - destruct T2.
+    + rewrite size_node. rewrite IHT2. cbn. rewrite Nat.add_succ_r. cbn. rewrite Nat.sub_0_r.
+      reflexivity.
+    + cbn. symmetry. rewrite Nat.sub_0_r. apply Nat.add_0_r.
+  - reflexivity.
 Qed.
 
 Lemma removeMax_incl :
@@ -504,13 +504,13 @@ Lemma removeMax_incl :
     Elem A a (removeMax A T) -> Elem A a T.
 Proof.
   induction T; cbn.
-    destruct T2; intros.
-      inversion H.
-        apply elem_root.
-        apply elem_left. exact H1.
-        apply elem_right. apply IHT2. cbn. exact H1.
-      apply elem_left. exact H.
-    exact id.
+  - destruct T2; intros.
+    + inversion H.
+      * apply elem_root.
+      * apply elem_left. exact H1.
+      * apply elem_right. apply IHT2. cbn. exact H1.
+    + apply elem_left. exact H.
+  - exact id.
 Qed.
 
 Lemma removeMax_elem :
@@ -518,19 +518,19 @@ Lemma removeMax_elem :
     Elem A a T -> Elem A a (removeMax A T) \/ max A T = Just A a.
 Proof.
   intros. induction H.
-    cbn. destruct Tr.
-      left. apply elem_root.
-      right. reflexivity.
-    left. cbn. destruct T'.
-      apply elem_left. exact H.
-      exact H.
-    destruct IHElem.
-      left. cbn. destruct T.
-        apply elem_right. exact H0.
-        cbn in H0. inversion H0.
-      right. cbn. destruct T.
-        exact H0.
-        cbn in H0. inversion H0.
+  - cbn. destruct Tr.
+    + left. apply elem_root.
+    + right. reflexivity.
+  - left. cbn. destruct T'.
+    + apply elem_left. exact H.
+    + exact H.
+  - destruct IHElem.
+    + left. cbn. destruct T.
+      * apply elem_right. exact H0.
+      * cbn in H0. inversion H0.
+    + right. cbn. destruct T.
+      * exact H0.
+      * cbn in H0. inversion H0.
 Qed.
 
 Theorem removeMax_BST_correct :
@@ -538,25 +538,25 @@ Theorem removeMax_BST_correct :
     BSTProperty A ord T -> BSTProperty A ord (removeMax A T).
 Proof.
   intros. induction H.
-    cbn. destruct Tr.
-      apply BST_node.
-        exact H.
-        exact IHBSTProperty2.
-        exact H1.
-        intros. apply H2. apply removeMax_incl. exact H3.
-      exact H.
-    cbn. apply BST_empty.
+  - cbn. destruct Tr.
+    + apply BST_node.
+      * exact H.
+      * exact IHBSTProperty2.
+      * exact H1.
+      * intros. apply H2. apply removeMax_incl. exact H3.
+    + exact H.
+  - cbn. apply BST_empty.
 Qed.
 
 Fact remove_decrease :
   forall (A : Type) (T : BinTree A), size A (remove A T) = size A T - 1.
 Proof.
   destruct T; cbn.
-    destruct T1.
-      destruct (max_success A T1_1 T1_2 a0). rewrite H. rewrite size_node.
-rewrite removeMax_decrease. cbn. f_equal. f_equal. apply Nat.sub_0_r.
-      cbn. symmetry. apply Nat.sub_0_r.
-    reflexivity.
+  - destruct T1.
+    + destruct (max_success A T1_1 T1_2 a0). rewrite H. rewrite size_node.
+      rewrite removeMax_decrease. cbn. f_equal. f_equal. apply Nat.sub_0_r.
+    + cbn. symmetry. apply Nat.sub_0_r.
+  - reflexivity.
 Qed.
 
 Lemma remove_incl :
@@ -564,13 +564,13 @@ Lemma remove_incl :
     Elem A a (remove A T) -> Elem A a T.
 Proof.
   destruct T; cbn.
-    destruct T1.
-      destruct (max_success A T1_1 T1_2 a1). rewrite H. intro. inversion H0.
-        apply elem_left. apply max_elem. exact H.
-        apply elem_left. apply removeMax_incl. cbn. exact H2.
-        apply elem_right. exact H2.
-      cbn. intros. apply elem_right. exact H.
-    exact id.
+  - destruct T1.
+    + destruct (max_success A T1_1 T1_2 a1). rewrite H. intro. inversion H0.
+      * apply elem_left. apply max_elem. exact H.
+      * apply elem_left. apply removeMax_incl. cbn. exact H2.
+      * apply elem_right. exact H2.
+    + cbn. intros. apply elem_right. exact H.
+  - exact id.
 Qed.
 
 Lemma remove_elem :
@@ -578,17 +578,17 @@ Lemma remove_elem :
     Elem A a T -> Elem A a (remove A T) \/ root A T = Just A a.
 Proof.
   intros. destruct H.
-    right. cbn. reflexivity.
-    left. cbn. destruct T.
-      destruct (max_success A T1 T2 a0). rewrite H0.
-destruct (removeMax_elem A a (Node A a0 T1 T2)).
-        exact H.
-        apply elem_left. exact H1.
-        rewrite H0 in H1. injection H1. intros. rewrite H2. apply elem_root.
-      inversion H.
-    left. cbn. destruct T'.
-      destruct (max_success A T'1 T'2 a0). rewrite H0. apply elem_right. exact H.
-      cbn. exact H.
+  - right. cbn. reflexivity.
+  - left. cbn. destruct T.
+    + destruct (max_success A T1 T2 a0). rewrite H0.
+      destruct (removeMax_elem A a (Node A a0 T1 T2)).
+      * exact H.
+      * apply elem_left. exact H1.
+      * rewrite H0 in H1. injection H1. intros. rewrite H2. apply elem_root.
+    + inversion H.
+  - left. cbn. destruct T'.
+    + destruct (max_success A T'1 T'2 a0). rewrite H0. apply elem_right. exact H.
+    + cbn. exact H.
 Qed.
 
 Theorem remove_BST_correct :
@@ -599,24 +599,24 @@ Theorem remove_BST_correct :
     BSTProperty A ord (remove A T).
 Proof.
   intros. destruct H1; cbn.
-    destruct Tl.
-      destruct (max_success A Tl1 Tl2 a0). rewrite H3. apply BST_node.
-        apply removeMax_BST_correct. exact H1_.
-        exact H1_0.
-        intros. apply (max_correct A ord (Node A a0 Tl1 Tl2)).
-          exact H.
-          exact H0.
-          exact H1_.
-          apply removeMax_incl. exact H4.
-          exact H3.
-        intros.
-apply (BST_trans A ord a (Node A a0 Tl1 Tl2) Tr).
-          exact H0.
-          apply BST_node; trivial.
-          apply max_elem. exact H3.
-          exact H4.
-      cbn. exact H1_0.
-    apply BST_empty.
+  - destruct Tl.
+    + destruct (max_success A Tl1 Tl2 a0). rewrite H3. apply BST_node.
+      * apply removeMax_BST_correct. exact H1_.
+      * exact H1_0.
+      * intros. apply (max_correct A ord (Node A a0 Tl1 Tl2)).
+        -- exact H.
+        -- exact H0.
+        -- exact H1_.
+        -- apply removeMax_incl. exact H4.
+        -- exact H3.
+      * intros.
+        apply (BST_trans A ord a (Node A a0 Tl1 Tl2) Tr).
+        -- exact H0.
+        -- apply BST_node; trivial.
+        -- apply max_elem. exact H3.
+        -- exact H4.
+    + cbn. exact H1_0.
+  - apply BST_empty.
 Qed.
 
 Fact delete_decrease :
@@ -626,25 +626,25 @@ Fact delete_decrease :
     Elem A a T -> size A (delete A ord a T) = size A T - 1.
 Proof.
   intros. induction H1; cbn; inversion H0.
-    rewrite H. fold (remove A (Node A a Tl Tr)). apply remove_decrease.
-    rewrite H7.
-      specialize (bool_fun A ord a' a). intro. destruct H9; rewrite H9.
-        fold (remove A (Node A a T T')). apply remove_decrease.
-        cbn. rewrite IHElem.
-          destruct T.
-            cbn. rewrite Nat.sub_0_r. reflexivity.
-            inversion H1.
-          exact H5.
-      exact H1.
-    rewrite H8.
-      specialize (bool_fun A ord a a'). intro. destruct H9; rewrite H9.
-        fold (remove A (Node A a T' T)). apply remove_decrease.
-        cbn. rewrite IHElem.
-          destruct T.
-            cbn. rewrite Nat.add_succ_r. cbn. f_equal. f_equal. apply Nat.sub_0_r.
-            inversion H1.
-          exact H6.
-      exact H1.
+  - rewrite H. fold (remove A (Node A a Tl Tr)). apply remove_decrease.
+  - rewrite H7.
+    + specialize (bool_fun A ord a' a). intro. destruct H9; rewrite H9.
+      * fold (remove A (Node A a T T')). apply remove_decrease.
+      * cbn. rewrite IHElem.
+        -- destruct T.
+          ++ cbn. rewrite Nat.sub_0_r. reflexivity.
+          ++ inversion H1.
+        -- exact H5.
+    + exact H1.
+  - rewrite H8.
+    + specialize (bool_fun A ord a a'). intro. destruct H9; rewrite H9.
+      * fold (remove A (Node A a T' T)). apply remove_decrease.
+      * cbn. rewrite IHElem.
+        -- destruct T.
+          ++ cbn. rewrite Nat.add_succ_r. cbn. f_equal. f_equal. apply Nat.sub_0_r.
+          ++ inversion H1.
+        -- exact H6.
+    + exact H1.
 Qed.
 
 Fact delete_find_decrease :
@@ -653,21 +653,21 @@ Fact delete_find_decrease :
     size A (delete A ord a T) = size A T - 1.
 Proof.
   induction T; cbn.
-    specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
-destruct H; rewrite H.
-      destruct H0; rewrite H0; intros.
-        fold (remove A (Node A a T1 T2)). apply remove_decrease.
-        cbn. rewrite IHT1.
-          destruct T1; cbn.
-            f_equal. f_equal. apply Nat.sub_0_r.
-            cbn in H1. inversion H1.
-          exact H1.
-      intros. cbn. rewrite IHT2.
-        destruct T2; cbn.
-          rewrite Nat.add_succ_r. cbn. f_equal. f_equal. apply Nat.sub_0_r.
-          cbn in H1. inversion H1.
-        exact H1.
-    reflexivity.
+  - specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
+    destruct H; rewrite H.
+    + destruct H0; rewrite H0; intros.
+      * fold (remove A (Node A a T1 T2)). apply remove_decrease.
+      * cbn. rewrite IHT1.
+        -- destruct T1; cbn.
+          ++ f_equal. f_equal. apply Nat.sub_0_r.
+          ++ cbn in H1. inversion H1.
+        -- exact H1.
+    + intros. cbn. rewrite IHT2.
+      * destruct T2; cbn.
+        -- rewrite Nat.add_succ_r. cbn. f_equal. f_equal. apply Nat.sub_0_r.
+        -- cbn in H1. inversion H1.
+      * exact H1.
+  - reflexivity.
 Qed.
 
 Fact delete_not_find_ident :
@@ -675,13 +675,13 @@ Fact delete_not_find_ident :
     find A ord a T = false -> delete A ord a T = T.
 Proof.
   induction T; cbn.
-    specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
-destruct H; rewrite H.
-      destruct H0; rewrite H0.
-        intro. inversion H1.
-        intro. rewrite IHT1; trivial.
-      intro. rewrite IHT2; trivial.
-    reflexivity.
+  - specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
+    destruct H; rewrite H.
+    + destruct H0; rewrite H0.
+      * intro. inversion H1.
+      * intro. rewrite IHT1; trivial.
+    + intro. rewrite IHT2; trivial.
+  - reflexivity.
 Qed.
 
 Fact delete_decrease_find :
@@ -690,25 +690,25 @@ Fact delete_decrease_find :
     find A ord a T = true \/ T = Empty A.
 Proof.
   induction T.
-    cbn. specialize (bool_fun A ord). intro. specialize (H a0 a) as H1.
-specialize (H a a0) as H0. destruct H0; rewrite H0.
-      destruct H1; rewrite H1; cbn.
-        intros. left. reflexivity.
-        rewrite Nat.sub_0_r. rewrite <- Nat.add_succ_l. rewrite Nat.add_cancel_r. intro.
-destruct IHT1.
-          destruct T1; cbn in *.
-            injection H2. intro. rewrite H3. symmetry. apply Nat.sub_0_r.
-            reflexivity.
-          left. exact H3.
-          rewrite H3 in H2. cbn in H2. inversion H2.
-      cbn. rewrite Nat.sub_0_r. rewrite <- Nat.add_succ_r. rewrite Nat.add_cancel_l. intro.
-destruct IHT2.
-        destruct T2; cbn in *.
-          injection H2. intro. rewrite H3. symmetry. apply Nat.sub_0_r.
-          reflexivity.
-        left. exact H3.
-        rewrite H3 in H2. cbn in H2. inversion H2.
-    intro. right. reflexivity.
+  - cbn. specialize (bool_fun A ord). intro. specialize (H a0 a) as H1.
+    specialize (H a a0) as H0. destruct H0; rewrite H0.
+    + destruct H1; rewrite H1; cbn.
+      * intros. left. reflexivity.
+      * rewrite Nat.sub_0_r. rewrite <- Nat.add_succ_l. rewrite Nat.add_cancel_r. intro.
+        destruct IHT1.
+        -- destruct T1; cbn in *.
+          ++ injection H2. intro. rewrite H3. symmetry. apply Nat.sub_0_r.
+          ++ reflexivity.
+        -- left. exact H3.
+        -- rewrite H3 in H2. cbn in H2. inversion H2.
+    + cbn. rewrite Nat.sub_0_r. rewrite <- Nat.add_succ_r. rewrite Nat.add_cancel_l. intro.
+      destruct IHT2.
+      * destruct T2; cbn in *.
+        -- injection H2. intro. rewrite H3. symmetry. apply Nat.sub_0_r.
+        -- reflexivity.
+      * left. exact H3.
+      * rewrite H3 in H2. cbn in H2. inversion H2.
+  - intro. right. reflexivity.
 Qed.
 
 Lemma delete_incl :
@@ -716,24 +716,24 @@ Lemma delete_incl :
     Elem A a (delete A ord a' T) -> Elem A a T.
 Proof.
   induction T; cbn.
-    specialize (bool_fun A ord). intro. specialize (H a' a0) as H0. specialize (H a0 a').
-destruct H0; rewrite H0.
-      destruct H; rewrite H.
-        destruct T1.
-          destruct (max_success A T1_1 T1_2 a1). rewrite H1. intro. inversion H2.
-            apply elem_left. apply max_elem. exact H1.
-            apply elem_left. apply removeMax_incl. cbn. exact H4.
-            apply elem_right. exact H4.
-          cbn. intro. apply elem_right. exact H1.
-        intro. inversion H1.
-          apply elem_root.
-          apply elem_left. apply IHT1. exact H3.
-          apply elem_right. exact H3.
-      intro. inversion H1.
-        apply elem_root.
-        apply elem_left. exact H3.
-        apply elem_right. apply IHT2. exact H3.
-    exact id.
+  - specialize (bool_fun A ord). intro. specialize (H a' a0) as H0. specialize (H a0 a').
+    destruct H0; rewrite H0.
+    + destruct H; rewrite H.
+      * destruct T1.
+        -- destruct (max_success A T1_1 T1_2 a1). rewrite H1. intro. inversion H2.
+          ++ apply elem_left. apply max_elem. exact H1.
+          ++ apply elem_left. apply removeMax_incl. cbn. exact H4.
+          ++ apply elem_right. exact H4.
+        -- cbn. intro. apply elem_right. exact H1.
+      * intro. inversion H1.
+        -- apply elem_root.
+        -- apply elem_left. apply IHT1. exact H3.
+        -- apply elem_right. exact H3.
+    + intro. inversion H1.
+      * apply elem_root.
+      * apply elem_left. exact H3.
+      * apply elem_right. apply IHT2. exact H3.
+  - exact id.
 Qed.
 
 Lemma delete_elem :
@@ -741,26 +741,26 @@ Lemma delete_elem :
     Elem A a T -> Elem A a (delete A ord a' T) \/ find A ord a' T = true.
 Proof.
   intros. specialize (bool_fun A ord). intro. induction H; cbn.
-    intros. specialize (H0 a a') as H1. specialize (H0 a' a).
-destruct H0; rewrite H.
-      destruct H1; rewrite H0.
-        right. reflexivity.
-        left. apply elem_root.
-      left. apply elem_root.
-    specialize (H0 a'0 a') as H1. specialize (H0 a' a'0). destruct H0; rewrite H0.
-      destruct H1; rewrite H1.
-        right. reflexivity.
-        destruct IHElem.
-          left. apply elem_left. exact H2.
-          right. exact H2.
-      left. apply elem_left. exact H.
-    specialize (H0 a'0 a') as H1. specialize (H0 a' a'0). destruct H0; rewrite H0.
-      destruct H1; rewrite H1.
-        right. reflexivity.
-        left. apply elem_right. exact H.
-      destruct IHElem.
-        left. apply elem_right. exact H2.
-        right. exact H2.
+  - intros. specialize (H0 a a') as H1. specialize (H0 a' a).
+    destruct H0; rewrite H.
+    + destruct H1; rewrite H0.
+      * right. reflexivity.
+      * left. apply elem_root.
+    + left. apply elem_root.
+  - specialize (H0 a'0 a') as H1. specialize (H0 a' a'0). destruct H0; rewrite H0.
+    + destruct H1; rewrite H1.
+      * right. reflexivity.
+      * destruct IHElem.
+        -- left. apply elem_left. exact H2.
+        -- right. exact H2.
+    + left. apply elem_left. exact H.
+  - specialize (H0 a'0 a') as H1. specialize (H0 a' a'0). destruct H0; rewrite H0.
+    + destruct H1; rewrite H1.
+      * right. reflexivity.
+      * left. apply elem_right. exact H.
+    + destruct IHElem.
+      * left. apply elem_right. exact H2.
+      * right. exact H2.
 Qed.
 
 Theorem delete_BST_correct :
@@ -771,23 +771,23 @@ Theorem delete_BST_correct :
     BSTProperty A (fun b b' : A => ord b b' = true) (delete A ord a T).
 Proof.
   intros. induction H1; cbn.
-    specialize (bool_fun A ord). intro. specialize (H3 a0 a) as H4. specialize (H3 a a0).
-destruct H3; rewrite H3.
-      destruct H4; rewrite H4.
-        destruct Tl.
-          destruct (max_success A Tl1 Tl2 a1). rewrite H5. apply BST_node.
-            apply removeMax_BST_correct. exact H1_.
-            exact H1_0.
-            intros.
+  - specialize (bool_fun A ord). intro. specialize (H3 a0 a) as H4. specialize (H3 a a0).
+    destruct H3; rewrite H3.
+    + destruct H4; rewrite H4.
+      * destruct Tl.
+        -- destruct (max_success A Tl1 Tl2 a1). rewrite H5. apply BST_node.
+          ++ apply removeMax_BST_correct. exact H1_.
+          ++ exact H1_0.
+          ++ intros.
 apply (max_correct A (fun b b' : A => ord b b' = true) (Node A a1 Tl1 Tl2)); trivial.
 apply removeMax_incl. exact H6.
-            intros. apply (H0 x a0 a').
-              apply H1. apply max_elem. exact H5.
-              apply H2. exact H6.
-          cbn. exact H1_0.
-        apply BST_node; trivial. intros. apply H1. apply (delete_incl A ord a' a). exact H5.
-      apply BST_node; trivial. intros. apply H2. apply (delete_incl A ord a' a). exact H5.
-    apply BST_empty.
+          ++ intros. apply (H0 x a0 a').
+            ** apply H1. apply max_elem. exact H5.
+            ** apply H2. exact H6.
+        -- cbn. exact H1_0.
+      * apply BST_node; trivial. intros. apply H1. apply (delete_incl A ord a' a). exact H5.
+    + apply BST_node; trivial. intros. apply H2. apply (delete_incl A ord a' a). exact H5.
+  - apply BST_empty.
 Qed.
 
 Theorem insert_delete_inverse :
@@ -797,11 +797,11 @@ Theorem insert_delete_inverse :
     delete A ord a (insert A ord a T) = T.
 Proof.
   induction T.
-    cbn. specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
-destruct H; rewrite H.
-      destruct H0; rewrite H0.
-        intros. inversion H2.
-        cbn. rewrite H. rewrite H0. intros. rewrite IHT1; trivial.
-      cbn. rewrite H. intros. rewrite IHT2; trivial.
-    cbn. intros. rewrite H. reflexivity.
+  - cbn. specialize (bool_fun A ord). intro. specialize (H a0 a) as H0. specialize (H a a0).
+    destruct H; rewrite H.
+    + destruct H0; rewrite H0.
+      * intros. inversion H2.
+      * cbn. rewrite H. rewrite H0. intros. rewrite IHT1; trivial.
+    + cbn. rewrite H. intros. rewrite IHT2; trivial.
+  - cbn. intros. rewrite H. reflexivity.
 Qed.
